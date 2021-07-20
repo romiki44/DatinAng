@@ -23,12 +23,19 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.model).subscribe(
       (res) => {
         console.log(res);
-        this.toastr.success('Login success');
+        const username =
+          this.model.username.charAt(0).toUpperCase() +
+          this.model.username.slice(1);
+        this.toastr.success(username + ' has logged in.');
         this.router.navigateByUrl('/members');
       },
       (error) => {
         console.log(error);
-        this.toastr.error(error.error);
+        if (error.error) {
+          this.toastr.error(error.error);
+        } else {
+          this.toastr.error(error);
+        }
       }
     );
   }
