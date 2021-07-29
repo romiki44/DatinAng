@@ -58,7 +58,7 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return this.getpaginatedResult<Member[]>(
+    return this.getPaginatedResult<Member[]>(
       this.baseUrl + 'users',
       params
     ).pipe(
@@ -69,7 +69,7 @@ export class MembersService {
     );
   }
 
-  private getpaginatedResult<T>(url, params: HttpParams) {
+  private getPaginatedResult<T>(url, params: HttpParams) {
     const paginatedResult = new PaginatedResult<T>();
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map((response) => {
@@ -123,5 +123,18 @@ export class MembersService {
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/' + username, {});
+  }
+
+  getLikes(predicate: string, pageNumber, pageSize) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Partial<Member[]>>(
+      this.baseUrl + 'likes',
+      params
+    );
   }
 }
