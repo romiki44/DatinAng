@@ -46,7 +46,7 @@ export class MembersService {
   getMembers(userParams: UserParams) {
     var response = this.memberCache.get(Object.values(userParams).join('-'));
     if (response) {
-      console.log(this.memberCache);
+      //console.log(this.memberCache);
       return of(response);
     }
 
